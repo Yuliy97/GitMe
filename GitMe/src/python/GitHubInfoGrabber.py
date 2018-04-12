@@ -1,10 +1,13 @@
 import json
 import requests
+from datetime import datetime, timedelta
+
 
 
 def count_user_commits(user):
     r = requests.get('https://api.github.com/users/%s/repos' % user)
     repos = json.loads(r.content)
+    #print repos
 
     for repo in repos:
         if repo['fork'] is True:
@@ -14,6 +17,18 @@ def count_user_commits(user):
         repo['num_commits'] = n
         yield repo
 
+def count_user_commits_with_password(user, password):
+    r = requests.get('https://api.github.com/users/%s/repos' % user, auth=(user, password))
+    repos = json.loads(r.content)
+    #print repos
+
+    for repo in repos:
+        if repo['fork'] is True:
+            # skip it
+            continue
+        n = count_repo_commits(repo['url'] + '/commits')
+        repo['num_commits'] = n
+        yield repo
 
 def count_repo_commits(commits_url, _acc=0):
     r = requests.get(commits_url)
@@ -44,11 +59,48 @@ if __name__ == '__main__':
     try:
         user = sys.argv[1]
     except IndexError:
-        print "Usage: %s <username>" % sys.argv[0]
+        print "Usage: %s <username> <password>  ### password is optional ###" % sys.argv[0]
+        sys.exit(-1)
+    try:
+        password = sys.argv[2]
+    except IndexError:
+        r = requests.get('https://api.github.com/rate_limit')
+        rate = json.loads(r.content)
+        limit = rate['resources']['core']['limit']
+        remaining = rate['resources']['core']['remaining']
+        timestamp = rate['resources']['core']['reset']
+        reset_time = datetime.fromtimestamp(timestamp)
+        if remaining is 0:
+            print "ERROR: You have reached the limit for this type of access"
+            print "Your limit: ", limit
+            print "Reset Time(EST): ", reset_time
+            sys.exit(-1)
+
+        
+        total = 0
+        print user
+        for repo in count_user_commits(user):
+            print "Repo `%(name)s` has %(num_commits)d commits, size %(size)d." % repo
+            total += repo['num_commits']
+        print "Total commits: %d" % total
         sys.exit(1)
+
+    r = requests.get('https://api.github.com/rate_limit', auth=(user, password))
+    rate = json.loads(r.content)
+    limit = rate['resources']['core']['limit']
+    remaining = rate['resources']['core']['remaining']
+    timestamp = rate['resources']['core']['reset']
+    reset_time = datetime.fromtimestamp(timestamp)
+    if remaining is 0:
+        print "ERROR: You have reached the limit for this type of access"
+        print "Your limit: ", limit
+        print "Reset Time(EST): ", reset_time
+        sys.exit(-1)  
+
     total = 0
     print user
-    for repo in count_user_commits(user):
+    print "password"
+    for repo in count_user_commits_with_password(user, password):
         print "Repo `%(name)s` has %(num_commits)d commits, size %(size)d." % repo
         total += repo['num_commits']
     print "Total commits: %d" % total
