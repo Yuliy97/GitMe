@@ -45,8 +45,6 @@ def get_user_repos_urls(username, password='def'):
     url = root + 'users/' + username + '/repos'
     r = get_request(url, username, password)
     repos = json.loads(r.content)
-    #print(json.dumps(repos, sort_keys=True, indent=4))
-    #print(json.dumps(repos[0], sort_keys=True, indent=4))
     repo_urls = {}
     for repo in repos:
         repo_urls[repo['name']] = (repo['html_url'])
@@ -85,7 +83,6 @@ def get_user_followers_username(username, password='def'):
 def get_user_followers_url(username, password='def'):
     follower_urls = {}
     for follower in __get_user_followers(username, password):
-        print(follower)
         follower_urls[follower['login']] = (follower['html_url'])
     return follower_urls
 
@@ -127,7 +124,8 @@ def __get_user_followers(username, password='def'):
     followers = json.loads(r.content)
     if len(followers) == 0:
         return None
-    yield followers
+    for follower in followers:
+        yield follower
 
 # given a link header from github, find the link for the next url which they use for pagination
 def __find_next(link):
