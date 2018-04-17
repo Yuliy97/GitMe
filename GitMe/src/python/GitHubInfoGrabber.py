@@ -1,37 +1,101 @@
 import json
 import requests
-from datetime import datetime, timedelta
+import datetime
+
+root = 'https://api.github.com/'
 
 
+####################################################################
+# Util funcs
+####################################################################
 
-def count_user_commits(user):
-    r = requests.get('https://api.github.com/users/%s/repos' % user)
+# Sends a request at URL for
+def get_request(url, username="def", password='def'):
+    if username == 'def' or password == 'def':
+        r = requests.get(url)
+    else:
+        r = requests.get(url, auth=(username, password))
+    return r
+
+####################################################################
+# For getting specfic information about a user
+####################################################################
+
+# Gets all the User infromation I currently believe is necessary for the project
+# Returns it as a dictionary
+def get_relevant_user_info(username, password='def'):
+    url = root + 'users/' + username
+    r = get_request(url, username, password)
+    user = json.loads(r.content)
+    user_info = {}
+    user_info['login'] = user['login']
+    user_info['html_url'] = user['html_url']
+    user_info['follower_info'] = get_user_followers_url(username, password)
+    user_info['total_commits'] = count_user_commits(username, password)
+    user_info['repos_html'] = get_user_repos_urls(username, password)
+
+    # TODO Get the feed_entities
+
+    return user_info
+
+# TODO: Get the feed_entities
+
+# Returns a list of a users repositories as dictionary[name] = html_url
+def get_user_repos_urls(username, password='def'):
+    url = root + 'users/' + username + '/repos'
+    r = get_request(url, username, password)
     repos = json.loads(r.content)
-    #print repos
-
+    #print(json.dumps(repos, sort_keys=True, indent=4))
+    #print(json.dumps(repos[0], sort_keys=True, indent=4))
+    repo_urls = {}
     for repo in repos:
-        if repo['fork'] is True:
-            # skip it
-            continue
+        repo_urls[repo['name']] = (repo['html_url'])
+    return repo_urls
+
+# Returns the HTML url of a user (aka their personal page)
+def get_user_url(username, password='def'):
+    url = root +'users/' + username
+    r = get_request(url, username, password)
+    user = json.loads(r.content)
+    return user['html_url']
+
+# Returns the avatar url of a user
+def get_user_avatar(username, password='def'):
+    url = root + 'users/' + username
+    r = get_request(url, username, password)
+    user = json.loads(r.content)
+    return user['avatar_url']
+
+# Returns the number of commits a user has made in total
+def count_user_commits(username, password='def'):
+    total = 0
+    for repo in __get_user_repos(username, password):
         n = count_repo_commits(repo['url'] + '/commits')
-        repo['num_commits'] = n
-        yield repo
+        total += n
+    return total
 
-def count_user_commits_with_password(user, password):
-    r = requests.get('https://api.github.com/users/%s/repos' % user, auth=(user, password))
-    repos = json.loads(r.content)
-    #print repos
+# Returns the usernames of a users followers as a list
+def get_user_followers_username(username, password='def'):
+    follower_names = []
+    for follower in __get_user_followers(username, password):
+        follower_names.append(follower['login'])
+    return follower_names
 
-    for repo in repos:
-        if repo['fork'] is True:
-            # skip it
-            continue
-        n = count_repo_commits(repo['url'] + '/commits')
-        repo['num_commits'] = n
-        yield repo
+# Returns the urls of a users followers as a dictionary[username] =html_url
+def get_user_followers_url(username, password='def'):
+    follower_urls = {}
+    for follower in __get_user_followers(username, password):
+        print(follower)
+        follower_urls[follower['login']] = (follower['html_url'])
+    return follower_urls
 
+####################################################################
+# For getting information about a repo
+####################################################################
+
+# Counts the number of commits for a certain repo (can take /user/repo or /repo)
 def count_repo_commits(commits_url, _acc=0):
-    r = requests.get(commits_url)
+    r = get_request(commits_url)
     commits = json.loads(r.content)
     n = len(commits)
     if n == 0:
@@ -39,68 +103,69 @@ def count_repo_commits(commits_url, _acc=0):
     link = r.headers.get('link')
     if link is None:
         return _acc + n
-    next_url = find_next(r.headers['link'])
+    next_url = __find_next(r.headers['link'])
     if next_url is None:
         return _acc + n
-    # try to be tail recursive, even when it doesn't matter in CPython
     return count_repo_commits(next_url, _acc + n)
 
+####################################################################
+# Private Methods
+####################################################################
+
+# Gets the REST API infromation for all of a user's repos one at a time
+def __get_user_repos(username, password='def'):
+    url = root + "users/" + username + '/repos'
+    r = get_request(url, username, password)
+    repos = json.loads(r.content)
+    for repo in repos:
+        yield repo
+
+# Gets the REST API infromation fro all of a user's followers one at a time
+def __get_user_followers(username, password='def'):
+    url = root + 'users/' + username + '/followers'
+    r = get_request(url, username, password)
+    followers = json.loads(r.content)
+    if len(followers) == 0:
+        return None
+    yield followers
 
 # given a link header from github, find the link for the next url which they use for pagination
-def find_next(link):
+def __find_next(link):
     for l in link.split(','):
         a, b = l.split(';')
         if b.strip() == 'rel="next"':
             return a.strip()[1:-1]
 
 
-if __name__ == '__main__':
-    import sys
-    try:
-        user = sys.argv[1]
-    except IndexError:
-        print "Usage: %s <username> <password>  ### password is optional ###" % sys.argv[0]
-        sys.exit(-1)
-    try:
-        password = sys.argv[2]
-    except IndexError:
-        r = requests.get('https://api.github.com/rate_limit')
-        rate = json.loads(r.content)
-        limit = rate['resources']['core']['limit']
-        remaining = rate['resources']['core']['remaining']
-        timestamp = rate['resources']['core']['reset']
-        reset_time = datetime.fromtimestamp(timestamp)
-        if remaining is 0:
-            print "ERROR: You have reached the limit for this type of access"
-            print "Your limit: ", limit
-            print "Reset Time(EST): ", reset_time
-            sys.exit(-1)
+####################################################################
+# Test Cases
+####################################################################
 
-        
-        total = 0
-        print user
-        for repo in count_user_commits(user):
-            print "Repo `%(name)s` has %(num_commits)d commits, size %(size)d." % repo
-            total += repo['num_commits']
-        print "Total commits: %d" % total
-        sys.exit(1)
+def test():
+    username = "jgormley6"
+    password = "JG9671166soccerfan"
 
-    r = requests.get('https://api.github.com/rate_limit', auth=(user, password))
-    rate = json.loads(r.content)
-    limit = rate['resources']['core']['limit']
-    remaining = rate['resources']['core']['remaining']
-    timestamp = rate['resources']['core']['reset']
-    reset_time = datetime.fromtimestamp(timestamp)
-    if remaining is 0:
-        print "ERROR: You have reached the limit for this type of access"
-        print "Your limit: ", limit
-        print "Reset Time(EST): ", reset_time
-        sys.exit(-1)  
 
-    total = 0
-    print user
-    print "password"
-    for repo in count_user_commits_with_password(user, password):
-        print "Repo `%(name)s` has %(num_commits)d commits, size %(size)d." % repo
-        total += repo['num_commits']
-    print "Total commits: %d" % total
+    print("get_relevant_user_info")
+    print(json.dumps(get_relevant_user_info(username, password), indent=4))
+
+    print("get_user_repos_urls")
+    print(json.dumps(get_user_repos_urls(username, password), indent=4))
+
+    print("get_user_url")
+    print(get_user_url(username, password))
+
+    print("get_user_avatar")
+    print(get_user_avatar(username, password))
+
+    print("count_user_commits")
+    print(count_user_commits(username, password))
+
+    print("get_user_followers_username")
+    print(get_user_followers_username(username, password))
+
+    print("get_user_followers_url")
+    print(json.dumps(get_user_followers_url(username, password), indent=4))
+
+# Uncomment to test
+# test()
