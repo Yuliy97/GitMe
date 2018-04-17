@@ -106,7 +106,7 @@ api.add_resource(CalendarAssignments, '/<username>/calendar_assignments')
 api.add_resource(ProjectGroups, '/project_groups')
 api.add_resource(ProjectGroupsByUser, '/<username>/project_groups')
 api.add_resource(Repository, '/repository')
-api.add_resource(Repository, '/<username>/repository')
+api.add_resource(RepositoryByUser, '/<username>/repository')
 api.add_resource(FeedEntity, '/<repository>/feed_entity')
 
 if __name__ == '__main__':
