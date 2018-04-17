@@ -311,4 +311,4 @@ def single_tests():
     print("get_comments_for_user_repos")
     print(json.dumps(get_comments_for_user_repos(username, password), indent=4))
 # Uncomment to test
-test()
+# test()
