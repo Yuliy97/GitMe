@@ -17,9 +17,6 @@ db = PyMySQL.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
 app = Flask(__name__)
 api = Api(app)
 
-@app.route('/')
-def index():
-	return render_template('home.html')
 
 class Users(Resource):
 	def get(self):
