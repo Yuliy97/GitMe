@@ -27,10 +27,10 @@ def get_request(url, username="def", password='def'):
     return r
 
 ####################################################################
-# For getting specfic information about a user
+# For getting specific information about a user
 ####################################################################
 
-# Gets all the User infromation I currently believe is necessary for the project
+# Gets all the User information I currently believe is necessary for the project
 # Returns it as a dictionary
 def get_relevant_user_info(username, password='def'):
     url = root + 'users/' + username
@@ -40,16 +40,17 @@ def get_relevant_user_info(username, password='def'):
     user_info['login'] = user['login']
     user_info['html_url'] = user['html_url']
     user_info['follower_info'] = get_user_followers_url(username, password)
-    user_info['total_commits'] = count_user_commits(username, password)
+    user_info['total_commits'] = int(count_user_commits(username, password))
     user_info['repos_html'] = get_user_repos_html_urls(username, password)
-    user_info['repos_url'] = get_user_repos_urls(username,password)
+    user_info['repos_url'] = get_user_repos_urls(username, password)
+    user_info['avatar_url'] = get_user_avatar(username, password)
     # user_info['comments'] = get_comments_for_user_repos(username, password)
     # TODO Get the feed_entities
 
     return user_info
 
 # TODO: Get the feed_entities
- 
+
 
 # Returns a dictionary of a user's repositories as dictionary[name] = html_url
 def get_user_repos_html_urls(username, password='def'):
@@ -131,7 +132,7 @@ def get_relevant_repo_info(repo_url):
     repo_info['pull_requests'] = get_pull_requests(repo_url + '/pulls')
     repo_info['issues'] = get_repo_issues(repo_url + '/issues')
 
-    return repo_info   
+    return repo_info
 
 # Counts the number of commits for a certain repo (can take /user/repo or /repo)
 def count_repo_commits(commits_url, _acc=0):
@@ -155,17 +156,17 @@ def get_pull_requests(pulls_url, pull_list=None):
     pulls = json.loads(r.content)
     for pull in pulls:
         pull_list.append(__get_pull_info(pull))
-    
+
     link = r.headers.get('link')
     if link is None:
         return pull_list
-    
+
     next_url = __find_next(r.headers['link'])
     if next_url is None:
         return pull_list
 
     return get_pull_requests(next_url, pull_list)
-    
+
 
 # Gets all the comments for a repo and returns a list of dictionaries
 def get_repo_commit_comments(comments_url, comment_list=None):
@@ -174,7 +175,7 @@ def get_repo_commit_comments(comments_url, comment_list=None):
     r = get_request(comments_url)
     comments = json.loads(r.content)
     for comment in comments:
-        comment_list.append(__get_comment_info(comment)) 
+        comment_list.append(__get_comment_info(comment))
 
     link = r.headers.get('link')
     if link is None:
@@ -185,14 +186,14 @@ def get_repo_commit_comments(comments_url, comment_list=None):
         return comment_list
 
     return get_repo_commit_comments(next_url, comment_list)
- 
+
 def get_repo_issues(issues_url, issues_list=None):
     if issues_list is None:
         issues_list = []
     r = get_request(issues_url)
     issues = json.loads(r.content)
     for issue in issues:
-        issues_list.append(__get_issue_info(issue)) 
+        issues_list.append(__get_issue_info(issue))
 
     link = r.headers.get('link')
     if link is None:
@@ -208,15 +209,15 @@ def get_repo_issues(issues_url, issues_list=None):
 # Private Methods
 ####################################################################
 
-# Gets the REST API infromation for all of a user's repos one at a time
-# Includes starred repos 
+# Gets the REST API information for all of a user's repos one at a time
+# Includes starred repos
 def __get_user_repos(username, password='def'):
     url = root + "users/" + username + '/repos'
     r = get_request(url, username, password)
     repos = json.loads(r.content)
     for repo in repos:
         yield repo
-    # Includes starred repos 
+    # Includes starred repos
     url = root + "users/" + username + '/starred'
     r2= get_request(url, username, password)
     star_repos = json.loads(r2.content)
@@ -280,10 +281,11 @@ def test():
     print("get_relevant_user_info")
     user_info = get_relevant_user_info(username, password)
     print(json.dumps(user_info,indent=4))
+    print(get_user_avatar(username, password))
 
-    for repo in user_info['repos_url']:
-        repo_info = get_relevant_repo_info(repo)
-        print(json.dumps(repo_info, indent=4))
+    # for repo in user_info['repos_url']:
+    #     repo_info = get_relevant_repo_info(repo)
+    #     print(json.dumps(repo_info, indent=4))
 
 def single_tests():
 
@@ -311,4 +313,4 @@ def single_tests():
     print("get_comments_for_user_repos")
     print(json.dumps(get_comments_for_user_repos(username, password), indent=4))
 # Uncomment to test
-# test()
+test()
