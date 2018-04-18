@@ -1,0 +1,8 @@
+
+snack-bar-container.loginSuccess-snackbar {
+    background-color: teal !important;
+    color: whitesmoke;
+}
+snack-bar-container.loginFail-snackbar {
+    background-color: pink !important;
+}

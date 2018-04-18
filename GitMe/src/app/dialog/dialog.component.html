@@ -1,0 +1,14 @@
+<h1 mat-dialog-title color="primary">Login</h1>
+<div mat-dialog-content>
+  <p>Login with your GitHub Info.</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="email" placeholder="username or email" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="password" placeholder="password" required>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>No Thanks</button>
+  <button mat-button (click)="login()" cdkFocusInitial>Login</button>
+</div>
