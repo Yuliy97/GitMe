@@ -1,0 +1,46 @@
+user_info {
+        'login'         :   <their username>
+        'html_url'      :   <link to their page>
+        'follower_info' :{
+                            <username>  : <link to follower page>
+                            <username>  : <link to follower page>
+                        }
+        'total_commits' :   <user's total commits>
+        'repos_html'    :{
+                            <name of repo>: <link to repo page>
+                            <name of repo>: <link to repo page>
+                        }
+        'repos_url'     :[
+                            <list of api repo urls>
+                        ]
+}
+
+repo_info {
+        'html_url'      :   <link to repo page>
+        'name'          :   <name of repo>
+        'comments       :[
+                            {
+                                'id'        :   <id of comment>
+                                'body'      :   <body of comment>
+                                'html_url'  :   <link to comment>
+                                'user'      :   <user that made comment>
+                                'user_html_url: <link to user page>
+                                'date'      :   <date comment wad made>
+                            }
+                        ]
+        'pull_requests' :[
+                            {
+                                'user'      :   <persone who made request>
+                                'title'     :   <title of pull request> 
+                                'date'      :   <date pull_requests created>
+                            }
+                        ]
+
+        'issues'        :[
+                            {
+                                'title'     :   <title of issue>
+                                'state'     :   <state of issue closed, open, etc>   
+                                'date'      :   <date issue was created>
+                            }
+                        ]  
+}
