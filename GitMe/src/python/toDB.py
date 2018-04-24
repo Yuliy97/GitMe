@@ -9,6 +9,29 @@ cnx = {
   'db': "GitMe"
 }
 
+global feed_id
+global cal_id
+
+connection = mysql.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
+try:
+    with connection.cursor() as cursor:
+        feed_id = cursor.execute("SELECT MAX(id) FROM feed_entity")
+        if not cursor.rowcount:
+            feed_id = 0
+    connection.commit()
+finally:
+    connection.close()
+
+connection = mysql.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
+try:
+    with connection.cursor() as cursor:
+        cal_id = cursor.execute("SELECT MAX(id) FROM calendar_assignment")
+        if not cursor.rowcount:
+            cal_id = 0
+    connection.commit()
+finally:
+    connection.close()
+
 
 # remove row(s) from calendar_assignment table given username
 def remove_from_calendar_assignment(id):
@@ -109,17 +132,21 @@ def write_to_calendar_assignment(user_info=None, username=None, password=None):
 
 
 # add entry to contributions table given username and password
-def write_to_contributions(user_info=None, username=None, password=None):
+def write_to_contributions(user_info=None, group_name=None, username=None, password=None):
     connection = mysql.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
-
+    count = 0
     if user_info is None:
         user_info = get_relevant_user_info(username, password)
-
     user_name = user_info['login']
-
     try:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO contributions VALUES(%s, %s, %s)", (user_name))
+            for repo in user_info['repo_url']:
+                repo_name = get_relevant_repo_info(repo)
+                if group_name is None:
+                    group_name = 'Group ' + str(count)
+                    count += 1
+                cursor.execute("INSERT INTO contributions VALUES(%s, %s, %s)",
+                               (user_name, repo_name['title'], group_name))
         print("Successfully added", username, "to CONTRIBUTIONS")
         connection.commit()
     finally:
@@ -128,15 +155,55 @@ def write_to_contributions(user_info=None, username=None, password=None):
 
 # add entry to feed_entity table given username and password
 def write_to_feed_entity(user_info=None, username=None, password=None):
+    global feed_id
     connection = mysql.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
 
     if user_info is None:
         user_info = get_relevant_user_info(username, password)
 
+    url = get_user_url(username, password)
+    repo_url = user_info['repos_url']
+
     try:
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO feed_entity VALUES(%s, %s, %s, %s, %s, %s)", ())
-        print("Successfully added", username, "to FEED_ENTITY")
+            for repo in repo_url:
+                repo_info = get_relevant_repo_info(repo)
+                repo_html_url = repo_info['html_url']
+                content = repo_info['comments']
+                pulls = repo_info['pull_requests']
+                issues = repo_info['issues']
+
+                c_list = []
+                c_date = []
+                p_list = []
+                p_date = []
+                i_list = []
+                i_date = []
+
+                for c in content:
+                    c_list.append(c['body'])
+                    c_date.append(c['date'])
+                for p in pulls:
+                    p_list.append(p['title'])
+                    p_date.append(p['date'])
+                for i in issues:
+                    i_list.append(i['title'])
+                    i_date.append(i['date'])
+
+                for c, d in zip(c_list,c_date):
+                    feed_id += 1
+                    cursor.execute("INSERT INTO feed_entity VALUES(%s, %s, %s, %s, %s, %s)",
+                                   (id, c, d, repo_html_url,'commit', repo))
+                for p, d in zip(p_list, p_date):
+                    feed_id += 1
+                    cursor.execute("INSERT INTO feed_entity VALUES(%s, %s, %s, %s, %s, %s)",
+                                   (id, p, d, repo_html_url, 'pull', repo))
+                for i, d in zip(i_list, i_date):
+                    feed_id += 1
+                    cursor.execute("INSERT INTO feed_entity VALUES(%s, %s, %s, %s, %s, %s)",
+                                   (id, i, d, repo_html_url, 'issue', repo))
+
+                print("Successfully added", repo_info['name'], "to FEED_ENTITY")
         connection.commit()
     finally:
         connection.close()
@@ -210,7 +277,7 @@ def write_user_info(username, password):
     user_info = get_relevant_user_info(username, password)
     # write_to_calendar_assignment(user_info)
     # write_to_contributions(user_info)
-    # write_to_feed_entity(user_info)
+    write_to_feed_entity(user_info)
     write_to_following(user_info)
     write_to_repository(user_info)
     write_to_user(user_info)
