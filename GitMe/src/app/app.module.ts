@@ -48,6 +48,7 @@ import {
   MatFormFieldModule
 } from '@angular/material';
 import * as $ from 'jquery';
+import { EventsComponent } from './events/events.component';
 const routes: Routes = [
   {
     path: '',
@@ -57,6 +58,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'event',
+    component: EventsComponent,
   }
 ];
 @NgModule({
@@ -64,7 +69,8 @@ const routes: Routes = [
     AppComponent,
     WelcomeComponent,
     HomeComponent,
-    DialogComponent
+    DialogComponent,
+    EventsComponent
   ],
   imports: [
     MyDatePickerModule,

@@ -10,7 +10,8 @@
             </mat-card>
         </li>
         <li class ="inner-flex-item1">
-            <div *ngIf="calendarOptions">
+          <app-events></app-events>
+            <!-- <div *ngIf="calendarOptions">
             <ng-fullcalendar #ucCalendar [options]="calendarOptions" [(eventsModel)]="events"></ng-fullcalendar>
             </div>
             <div class="modal fade" id="add_event_modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -51,7 +52,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
         </li>
       </ul>
     </li>
