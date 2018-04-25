@@ -12,6 +12,8 @@ import { HttpModule } from '@angular/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { MyDatePickerModule } from 'mydatepicker';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -45,6 +47,8 @@ import {
   MatTooltipModule,
   MatFormFieldModule
 } from '@angular/material';
+import * as $ from 'jquery';
+import { EventsComponent } from './events/events.component';
 const routes: Routes = [
   {
     path: '',
@@ -54,6 +58,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'event',
+    component: EventsComponent,
   }
 ];
 @NgModule({
@@ -61,12 +69,17 @@ const routes: Routes = [
     AppComponent,
     WelcomeComponent,
     HomeComponent,
-    DialogComponent
+    DialogComponent,
+    EventsComponent
   ],
   imports: [
+    MyDatePickerModule,
+    FullCalendarModule,
+    MatExpansionModule,
     BrowserModule,
     MatToolbarModule,
     MatDialogModule,
+    MatCardModule,
     FormsModule,
     HttpModule,
     MatSnackBarModule,
