@@ -10,55 +10,22 @@
             </mat-card>
         </li>
         <li class ="inner-flex-item1">
+          <div>
           <app-events></app-events>
-            <!-- <div *ngIf="calendarOptions">
-            <ng-fullcalendar #ucCalendar [options]="calendarOptions" [(eventsModel)]="events"></ng-fullcalendar>
-            </div>
-            <div class="modal fade" id="add_event_modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Site Information</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <label>Event Name
-                        <input type="text" [(ngModel)]="event_name" name="event_name" class="form-control">
-                      </label>
-                      <label>Event attendees
-                        <input type="text" [(ngModel)]="attendees" name="attendees" class="form-control">
-                      </label>
-                      <label>Event Description
-                        <textarea [(ngModel)]="event_description" name="event_description" class="form-control"></textarea>
-                      </label>
-                      <label>Start Date
-                        <form #myForm="ngForm" novalidate>
-                          <my-date-picker [(ngModel)]="start_date" name="start_date" [options]="myDatePickerOptions"
-                                  [(ngModel)]="model" required></my-date-picker>
-                        </form>        
-                      </label>
-                      <label>End Date
-                        <form #myForm="ngForm" novalidate>
-                          <my-date-picker [(ngModel)]="end_date" name="end_date" [options]="myDatePickerOptions"
-                                  [(ngModel)]="model" required></my-date-picker>
-                        </form>        
-                      </label>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button (click)="on_add()" type="button" id="add_site" class="btn btn-primary" data-dismiss="modal">Submit</button>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+        </div>
         </li>
       </ul>
     </li>
       
     <li class="flex-item2">      
       <ul class="inner-flexcontainer">
+              <li class="inner-flex-item1">
+                  <mat-form-field class="example-full-width">
+                      <input matInput placeholder="search" [(ngModel)]="search">
+                    </mat-form-field>
+                    <button mat-button color=primary (click)="searchFor()" cdkFocusInitial>Search
+                      </button>
+              </li>
         <!-- <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn"> -->
               <li class="inner-flex-iten2" *ngFor="let issue of issues">
                   <mat-accordion>
@@ -80,8 +47,12 @@
 
     <li class="flex-item3">
         <ul class="inner-flexcontainer">
-            <li class ="inner-flex-item1">a</li>
-            <li class ="inner-flex-item1">b</li>
+            <li class ="inner-flex-item1">
+              <app-follower></app-follower>
+            </li>
+            <li class ="inner-flex-item1">
+              <app-following></app-following>
+            </li>
           </ul>
     </li>
   </ul>
