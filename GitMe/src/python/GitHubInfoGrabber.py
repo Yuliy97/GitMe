@@ -40,6 +40,7 @@ def get_relevant_user_info(username, password='def'):
     user_info['login'] = user['login']
     user_info['html_url'] = user['html_url']
     user_info['follower_info'] = get_user_followers_url(username, password)
+    user_info['follwing_info'] = get_user_following_url(username, password)
     user_info['total_commits'] = int(count_user_commits(username, password))
     user_info['repos_html'] = get_user_repos_html_urls(username, password)
     user_info['repos_url'] = get_user_repos_urls(username, password)
@@ -48,8 +49,6 @@ def get_relevant_user_info(username, password='def'):
     # TODO Get the feed_entities
 
     return user_info
-
-# TODO: Get the feed_entities
 
 
 # Returns a dictionary of a user's repositories as dictionary[name] = html_url
@@ -109,6 +108,12 @@ def get_user_followers_url(username, password='def'):
     for follower in __get_user_followers(username, password):
         follower_urls[follower['login']] = (follower['html_url'])
     return follower_urls
+
+def get_user_following_url(username, password='def'):
+    following_urls = {}
+    for following in __get_user_following(username, password):
+        following_urls[following['login']] = following['html_url']
+    return following_urls
 
 # Returns all the comments in the repos for a user
 def get_comments_for_user_repos(username, password='def'):
@@ -232,6 +237,7 @@ def __get_comment_info(comment):
     t_comment['user'] = comment['user']['login']
     t_comment['user_html_url'] = comment['user']['html_url']
     t_comment['date'] = comment['created_at']
+
     return t_comment
 
     #who asked for pull: user[login]
@@ -242,6 +248,7 @@ def __get_pull_info(pull):
     t_pull['user'] = pull['assignee']['login']
     t_pull['title'] = pull['title']
     t_pull['date'] = pull['created_at']
+    t_pull['html_url'] = pull['html_url']
     return t_pull
 
 def __get_issue_info(issue):
@@ -249,6 +256,8 @@ def __get_issue_info(issue):
     t_issue['title'] = issue['title']
     t_issue['state'] = issue['state']
     t_issue['date'] = issue['created_at']
+    t_issue['html_url'] = issue['html_url']
+
     return t_issue
 
 # Gets the REST API infromation fro all of a user's followers one at a time
@@ -259,6 +268,15 @@ def __get_user_followers(username, password='def'):
     if len(followers) == 0:
         return None
     for follower in followers:
+        yield follower
+        
+def __get_user_following(username, password='def'):
+    url = root + 'users/' + username + '/following'
+    r = get_request(url, username, password)
+    followings = json.loads(r.content)
+    if len(followings) == 0:
+       return None
+    for follower in followings:
         yield follower
 
 # given a link header from github, find the link for the next url which they use for pagination
@@ -313,4 +331,4 @@ def single_tests():
     print("get_comments_for_user_repos")
     print(json.dumps(get_comments_for_user_repos(username, password), indent=4))
 # Uncomment to test
-test()
+# test()

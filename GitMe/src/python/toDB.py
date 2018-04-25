@@ -243,8 +243,9 @@ def write_to_repository(user_info=None, username=None, password=None):
 
     try:
         with connection.cursor() as cursor:
-            for name, url in zip(names, urls):
-                cursor.execute("INSERT INTO repository VALUES(%s, %s, %s)", (name, url, user_name))
+            sql = "INSERT INTO repository VALUES(%s, %s)"
+            for name, url in repos.items():
+                cursor.execute(sql, (name, url))
                 print("Successfully added", name, "to REPOSITORY")
         connection.commit()
     finally:
@@ -271,6 +272,91 @@ def write_to_user(user_info=None, username=None, password=None):
     finally:
         connection.close()
 
+# add entry to repository table given username and password
+def write_to_all_info(user_info=None, username=None, password=None):
+    connection = mysql.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'], charset='utf8')
+
+    if user_info is None:
+        user_info = get_relevant_user_info(username, password)
+
+    # user table info
+    user_name = user_info["login"]
+    total_commits = user_info["total_commits"]
+    avatar_url = user_info['avatar_url']
+    user_url = user_info["html_url"]
+    followers = user_info['follower_info']
+    following = user_info['follwing_info']
+
+    # repository table info and contributions
+    repos = user_info['repos_html']
+
+    # Get repository information 
+    # repo_url = "https://api.github.com/users/%s/%s"
+    repo_list = []
+    for name, url in repos.items():
+        owner = parse_owner(url)
+        repo_url = "https://api.github.com/repos/{}/{}".format(owner, name)
+        repo_list.append(get_relevant_repo_info(repo_url))
+    # feed_entity table info
+
+    try:
+        with connection.cursor() as cursor:
+            # write to user_table
+            sql_user = "INSERT INTO user VALUES(%s, %s, %s, %s)"
+            try:
+                cursor.execute(sql_user, (user_name, total_commits, avatar_url, user_url))
+            except:
+                pass
+            # write to repository_table
+            sql_repository = "INSERT INTO repository VALUES(%s, %s)"
+            for name, url in repos.items():
+                try:
+                    cursor.execute(sql_repository, (name, url))
+                except:
+                    pass
+            # write to contributions
+            sql_contributions = "INSERT INTO contributions VALUES(%s, %s, %s)" 
+            for name, url in repos.items():
+                try:
+                    cursor.execute(sql_contributions, (user_name, url, "default"))
+                except:
+                    pass
+            # write to follower
+            sql_follower = "INSERT INTO following VALUES(%s, %s)"
+            for name, url in followers.items():
+                try:
+                    cursor.execute(sql_follower, (user_name, name))
+                except:
+                    pass
+            # write to follower for following
+            for name, url in following.items():
+                try:
+                    cursor.execute(sql_follower, (name, user_name))
+                except:
+                    pass
+            # write to feed_entity
+            sql_feed_entity = "INSERT INTO feed_entity (content, date, url, type, repo_url) VALUES(%s, %s, %s, %s, %s)"
+            # content, date, url, type, repo_url
+            for repo_info in repo_list:
+                for comment in repo_info['comments']:
+                    try:
+                        cursor.execute(sql_feed_entity, (comment['body'], comment['date'], comment['html_url'], 'comment', repo_info['html_url']))
+                    except:
+                        pass
+                for pull_request in repo_info['pull_requests']:
+                    try:
+                        cursor.execute(sql_feed_entity, (pull_request['title'], pull_request['date'], pull_request['html_url'], 'pull_request', repo_info['html_url']))
+                    except:
+                        pass
+                for issue in repo_info['issues']:
+                    try:
+                        cursor.execute(sql_feed_entity, (issue['title'], issue['date'], issue['html_url'], "issue", repo_info['html_url']))
+                    except:
+                        pass
+            connection.commit()
+    finally:
+        connection.close()
+
 
 # get user info and populate all tables
 def write_user_info(username, password):
@@ -281,6 +367,10 @@ def write_user_info(username, password):
     write_to_following(user_info)
     write_to_repository(user_info)
     write_to_user(user_info)
+
+def parse_owner(url):
+    elements = url.split("/")
+    return elements[3]
 
 
 
