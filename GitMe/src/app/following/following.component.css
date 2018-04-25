@@ -1,0 +1,6 @@
+mat-list {
+    height: 30vh;
+    flex-grow: 1;
+    border: 3px solid gray;
+    overflow: scroll;
+}

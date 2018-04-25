@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FollowingComponent implements OnInit {
   followings: any[] = [
-    'Jack', 'James', 'Kun'
+    'Jack', 'James', 'Kun', 'An', 'Justin', 'Tommy', 'Keonshae', 'Jordan', 'Melissa', 'Xiaomin'
   ];
   constructor() { }
 

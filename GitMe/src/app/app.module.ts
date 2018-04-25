@@ -79,11 +79,13 @@ const routes: Routes = [
     FollowingComponent
   ],
   imports: [
+    MatTabsModule,
     MatListModule,
     MyDatePickerModule,
     FullCalendarModule,
     MatExpansionModule,
     BrowserModule,
+    MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
     MatCardModule,
