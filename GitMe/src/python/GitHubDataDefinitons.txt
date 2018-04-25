@@ -33,6 +33,8 @@ repo_info {
                                 'user'      :   <persone who made request>
                                 'title'     :   <title of pull request> 
                                 'date'      :   <date pull_requests created>
+                                'html_url'  :   <link to request>
+
                             }
                         ]
 
@@ -41,6 +43,37 @@ repo_info {
                                 'title'     :   <title of issue>
                                 'state'     :   <state of issue closed, open, etc>   
                                 'date'      :   <date issue was created>
+                                'html_url'  :   <link to issue>
                             }
                         ]  
 }
+
+FeedEntities 
+t_entity['id'] = entity[0]
+t_entity['content'] = entity[1]
+t_entity['date'] = entity[2]
+t_entity['html_url'] = entity[3]
+t_entity['type'] = entity[4]
+t_entity['repo_url'] = entity[5]
+
+Repositories
+t_repo['repo_name'] = repo[0]
+t_repo['html_url'] = repo[1]
+t_repo['username'] = repo[2]
+t_repo['group_name'] = repo[3]
+
+user
+user['username'] = result[0]
+user['total_commits'] = result[1]
+user['avatar'] = result[2]
+user['html_url'] = result[3]
+
+CalendarAssignment
+t_ca['id'] = assignment[0]
+t_ca['description'] = assignment[1]
+t_ca['title'] = assignment[2]
+t_ca['username'] = assignment[3]
+t_ca['date'] = assignment[4]
+
+followers list of usernames
+following list of usernames
