@@ -1,0 +1,27 @@
+
+  <mat-card>
+      <mat-card-content>
+        <mat-tab-group class="demo-tab-group">
+          <mat-tab label="Following">
+            <div class="demo-tab-content">
+                <mat-list>
+                    <mat-divider></mat-divider>
+                    <mat-list-item *ngFor="let flr of followers">
+                      <h4 mat-line> {{flr}} </h4>
+                    </mat-list-item>
+                  </mat-list>
+            </div>
+          </mat-tab>
+          <mat-tab label="Follower">
+            <div class="demo-tab-content">
+                <mat-list class="following">
+                    <mat-divider></mat-divider>
+                    <mat-list-item *ngFor="let flg of followings">
+                      <h4 mat-line> {{flg}} </h4>
+                    </mat-list-item>
+                  </mat-list>
+            </div>  
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>

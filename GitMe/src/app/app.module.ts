@@ -49,6 +49,9 @@ import {
 } from '@angular/material';
 import * as $ from 'jquery';
 import { EventsComponent } from './events/events.component';
+import { FollowerComponent } from './follower/follower.component';
+import { ReposComponent } from './repos/repos.component';
+import { FollowingComponent } from './following/following.component';
 const routes: Routes = [
   {
     path: '',
@@ -70,13 +73,19 @@ const routes: Routes = [
     WelcomeComponent,
     HomeComponent,
     DialogComponent,
-    EventsComponent
+    EventsComponent,
+    FollowerComponent,
+    ReposComponent,
+    FollowingComponent
   ],
   imports: [
+    MatTabsModule,
+    MatListModule,
     MyDatePickerModule,
     FullCalendarModule,
     MatExpansionModule,
     BrowserModule,
+    MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
     MatCardModule,

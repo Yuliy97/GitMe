@@ -1,0 +1,18 @@
+<mat-list class="Repo">
+    <mat-divider></mat-divider>
+    <mat-list-item *ngFor="let repo of repos">
+        <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{repo.title}}
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  {{issue.date}}
+                </mat-panel-description> -->
+                </mat-expansion-panel-header>
+                  {{repo.url}}
+              </mat-expansion-panel>
+          </mat-accordion>
+    </mat-list-item>
+  </mat-list>
