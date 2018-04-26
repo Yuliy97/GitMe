@@ -104,7 +104,7 @@ class FeedEntity(Resource):
     def get(self, username=None):
         db = connect()
         #sql = "SELECT R.name, R.url, C.username, C.group_name FROM repository R JOIN (SELECT * FROM contributions WHERE username = %s) C ON R.url = C.repository" 
-        sql = "SELECT F.id, F.content, F.date, F.url, F.type, F.repo_url FROM feed_entity E JOIN (SELECT * FROM contributions WHERE username = %s) C ON E.repo_url = C.repository"
+        sql = "SELECT E.id, E.content, E.date, E.url, E.type, E.repo_url FROM feed_entity E JOIN (SELECT * FROM contributions WHERE username = %s) C ON E.repo_url = C.repository"
         try:
             with db.cursor() as cursor:
                 cursor.execute(sql, username)
@@ -119,7 +119,8 @@ class FeedEntity(Resource):
                     t_entity['type'] = entity[4]
                     t_entity['repo_url'] = entity[5]
                     feed_entities.append(t_entity)
-        except:
+        except Exception as err:
+            print(err)
             print("What a Terrible Failure: FeedEntity get")
         finally:
             db.close()
