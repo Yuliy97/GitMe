@@ -6,3 +6,6 @@ snack-bar-container.loginSuccess-snackbar {
 snack-bar-container.loginFail-snackbar {
     background-color: pink !important;
 }
+.jumbotron {
+    background-color: gray;
+}
