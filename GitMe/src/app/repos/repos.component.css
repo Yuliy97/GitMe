@@ -2,5 +2,4 @@ mat-list {
     height: 30vh;
     flex-grow: 1;
     overflow: scroll;
-    margin-top: 100px;
 }

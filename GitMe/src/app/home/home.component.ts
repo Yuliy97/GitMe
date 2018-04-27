@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit {
     this.username =  this._authService.getUsername();
     this._feedService.getFeeds(this.username).subscribe(
       data => {
-        this.issues.push.apply(this.issues, data);
+        this.issues.push.apply(data);
 
       }
     );
