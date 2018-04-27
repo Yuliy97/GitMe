@@ -1,25 +1,13 @@
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<div class="jumbotron">
-        <h1 class="display-3">GitMe</h1>
-        <p class="lead">Git me is a personalized web app that shows all the GitHub updates you have for all your accounts on one page.
-        It will show news for all your repos and repos you contribute to, a calendar for all the tasks you have to finish, and all things GitHub available in one location. No need to go searching through all your repos to find comments or requests, it will show up in your news feed! It's a convenient way to keep up to date with all your projects and users you are following.</p>
-        <hr class="my-4">
-        <p class="lead">
-                <button mat-raised-button color="primary" (click)="loginModal()">Login</button>
-        </p>
-</div> -->
 <div class="jumbotron">
     <mat-card class="GitMe">
-            <mat-card-title>GitMe</mat-card-title>
-            <mat-card-subtitle>Your personal GitHub Manager.</mat-card-subtitle>
-            <mat-card-content> 
+            <mat-card-title color="primary" style="text-align: center;">GitMe</mat-card-title>
+            <mat-card-subtitle style="text-align: center;">Your personal GitHub Manager.</mat-card-subtitle>
+            <mat-card-content style="text-align: center;"> 
                     Git me is a personalized web app that shows all the GitHub updates you have for all your accounts on one page.
                     It will show news for all your repos and repos you contribute to, a calendar for all the tasks you have to finish, and all things GitHub available in one location. No need to go searching through all your repos to find comments or requests, it will show up in your news feed! It's a convenient way to keep up to date with all your projects and users you are following.
             </mat-card-content>
             <mat-card-footer>
-                    <mat-card-actions> 
-                        <button mat-raised-button color="primary" (click)="loginModal()">Login</button>
-                    </mat-card-actions>
+                       <button mat-raised-button class="loginBtn" color="primary" (click)="loginModal()">Login</button>
             </mat-card-footer>
     </mat-card>
 </div>

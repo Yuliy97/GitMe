@@ -7,5 +7,16 @@ snack-bar-container.loginFail-snackbar {
     background-color: pink !important;
 }
 .jumbotron {
-    background-color: gray;
+    width: 70%;
+    background: gray;
+    color: gray;
+    margin: 0 auto;
+    margin-top: 10vh;
+    align-content: center;
+}
+button.mat-primary {
+    margin-left: 46% !important;
+    width: 5% !important;
+    margin-bottom: 5vh;
+    margin-top: 1vh;
 }

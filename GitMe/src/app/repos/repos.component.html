@@ -1,18 +1,17 @@
-<mat-list class="Repo">
-    <mat-divider></mat-divider>
-    <mat-list-item *ngFor="let repo of repos">
-        <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  {{repo.repo_name}}
-                </mat-panel-title>
-                <!-- <mat-panel-description>
-                  {{issue.group_name}}
-                </mat-panel-description> -->
-                </mat-expansion-panel-header>
-                  {{repo.html_url}}
-              </mat-expansion-panel>
-          </mat-accordion>
-    </mat-list-item>
-  </mat-list>
+  <mat-card>
+      <mat-card-content>
+        <mat-tab-group class="demo-tab-group">
+          <mat-tab label="Repository">
+            <div class="demo-tab-content">
+                <mat-list>
+                    <mat-divider></mat-divider>
+                    <mat-list-item *ngFor="let repo of repos">
+                        <h4 mat-line>{{repo.repo_name}}</h4>
+                        <p mat-line> {{repo.html_url}} </p>
+                    </mat-list-item>
+                  </mat-list>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>

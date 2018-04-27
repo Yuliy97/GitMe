@@ -24,9 +24,9 @@
     justify-content: space-around;
 }
   .flex-item1 {
-    background: tomato;
+    /* background: tomato; */
     /* padding: 5px; */
-    width: 30%;
+    width: 28%;
     height: inherit;
     /* flex:30%; */
     /* margin-right: 5px; */
@@ -36,50 +36,43 @@
   }
   .flex-item2 {
     overflow: scroll;
-    background: tomato;
+    /* background: tomato; */
     /* margin-right: 5px; */
     padding: 5px;
-    width: 40%;
+    width: 35%;
     height: auto;
     margin-bottom: 15px;
     
     /* line-height: 150px; */
   }
   .flex-item3 {
-    background: tomato;
+    /* background: tomato; */
     /* padding: 5px; */
-    width: 23%;
+    width: 27%;
     height: 100%;
     /* margin-top: 10px; */
     
     /* line-height: 150px; */
   }
   .inner-flexcontainer {
-    padding: 0;
-    margin: 0;
     list-style: none;
     height: inherit;
-    
-
     display: inherit;
     display: flex;
     flex-flow: column wrap;
-    -webkit-flex-flow: row wrap;
     justify-content: space-around;
   }
 
   .inner-flex-item1 {
-    background: yellow;
-    padding: 5px;
+    /* background: yellow; */
     width: inherit;
     height: 200px;
-    margin-top: 10px;
     
     /* line-height: 150px; */
 
   }
   .inner-flex-item2 {
-    background: yellow;
+    /* background: yellow; */
     padding: 5px;
     width: inherit;
     height: auto;
@@ -92,4 +85,7 @@
       width: inherit;
       height: inherit;
       font-size: inherit;
+  }
+  mat-card.profile.mat-card {
+    margin: 0 auto !important;
   }
