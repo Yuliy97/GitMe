@@ -31,7 +31,6 @@ def authorize(username="def", password="def"):
 
     r = requests.get(url, auth=(username, password))
     message = json.loads(r.content)
-    print(json.dumps(message, indent=4))
     
     try:
         mes = message['message']
