@@ -70,12 +70,28 @@
   }
   .cal {
     /* background: yellow; */
-    margin-top: 40px;
+    margin-top: 45px;
     width: inherit;
     height: 300px;
     margin-left: -20px;
     
     /* line-height: 150px; */
+
+  }
+  .follow {
+    /* background: yellow; */
+    margin-top: 40px;
+    width: inherit;
+    height: 200px;
+    flex-flow: column wrap;
+    
+    /* line-height: 150px; */
+  }
+  .repo {
+    margin-top: 50px;
+    width: inherit;
+    height: 200px;
+    flex-flow: column wrap;
 
   }
   .inner-flex-iten2 {
@@ -87,9 +103,6 @@
     
     /* line-height: 150px; */
 
-  }
-  mat-card.profile.mat-card {
-    margin: 0 auto !important;
   }
   .FeedContainer {
     margin-top: 20px;
