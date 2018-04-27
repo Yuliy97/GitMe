@@ -1,8 +1,8 @@
-<h1 mat-dialog-title color="primary">Login</h1>
+<h1 mat-dialog-title color="primary">Add Accounts</h1>
 <div mat-dialog-content>
   <p>Login with your GitHub Info.</p>
   <mat-form-field>
-    <input matInput [(ngModel)]="email" placeholder="username" required>
+    <input matInput [(ngModel)]="email" placeholder="email" required>
   </mat-form-field>
   <mat-form-field>
     <input matInput type="password" [(ngModel)]="password" placeholder="password"  required>
@@ -10,5 +10,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button color="link" mat-dialog-close>No Thanks</button>
-  <button mat-raised-button color="primary" (click)="login()" cdkFocusInitial>Login</button>
+  <button mat-raised-button color="primary" (click)="login()" cdkFocusInitial>Add</button>
 </div>

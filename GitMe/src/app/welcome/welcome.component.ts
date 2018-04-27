@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material';
 import {Router} from '@angular/router';
 import { DialogComponent } from '../dialog/dialog.component';
 import {MatSnackBar} from '@angular/material';
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -17,6 +18,7 @@ export class WelcomeComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -35,12 +37,24 @@ export class WelcomeComponent implements OnInit {
     });
   }
   checkCred() {
-    if (this.email === 'yuli@gmail.com' && this.password === 'yuli=best') {
-      this.router.navigate(['/home']);
-      this.snackBar.open('Welcome!', 'X', {duration: 2000, extraClasses: ['loginSuccess-snackbar']});
-    } else {
-      this.snackBar.open('Oops, incorrect email/username or passowrd.', 'Got It', {duration: 3000, extraClasses: ['loginFail-snackbar']});
-    }
+    this._authService.authenticate_user(this.email, this.password).subscribe(
+      data => {
+        if ( data === 'Authorized') {
+          this._authService.update_database(this.email, this.password).subscribe(
+            data => {
+              this.router.navigate(['/home']);
+          this.snackBar.open('Welcome!', 'X', {duration: 2000, extraClasses: ['loginSuccess-snackbar']});
+            }
+          );
+        } else {
+          this.snackBar.open(data, 'Got It', {duration: 3000, extraClasses: ['loginFail-snackbar']});
+        }
+      }
+    );
   }
+  getUsername() {
+    return this.email;
+  }
+
 
 }
