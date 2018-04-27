@@ -224,7 +224,7 @@ class CalendarAssignments(Resource):
         finally:
             db.close()
 
-api.add_resource(CalendarAssignments, '/users/<username>/calandar_assignments')
+api.add_resource(CalendarAssignments, '/users/<username>/calendar_assignments')
 
 class follower(Resource):
     def get(self, username=None):
