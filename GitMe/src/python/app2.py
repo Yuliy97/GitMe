@@ -233,26 +233,33 @@ class follower(Resource):
                 sql = "SELECT follower FROM following WHERE username=%s"
                 cursor.execute(sql, username)
                 result = cursor.fetchall()
+                followers = []
+                for follower in result:
+                    followers.append(follower[0])
+
         finally:
             db.close()
+        
 
-        return result      
+        return followers      
         
 api.add_resource(follower, '/users/<username>/follower')
 
 class following(Resource):
     def get(self, username=None):
         db = connect()
-        
         try:
             with db.cursor() as cursor:
                 sql = "SELECT username FROM following WHERE follower=%s"
                 cursor.execute(sql, username)
                 result = cursor.fetchall()
+                followings = []
+                for following in result:
+                    followings.append(following[0])
         finally:
             db.close()
-        
-        return result
+
+        return followings
 
 api.add_resource(following, '/users/<username>/following')
 

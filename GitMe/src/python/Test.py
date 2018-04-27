@@ -9,7 +9,21 @@ data = {}
 data["username"] = username
 data["password"] = password
 
+
 def test():
+    url = root + "/users/jgormley6/follower"
+    r = requests.get(url)
+    message = json.loads(r.content)
+
+    print(json.dumps(message, indent=4))
+
+    url = root + "/users/jgormley6/following"
+    r = requests.get(url)
+    message = json.loads(r.content)
+
+    print(json.dumps(message, indent=4))
+
+def old4test():
     url = root + "/authorize"
     params={'username': 'jgormley6', 'password': 'JG9671166soccerfan'}
 

@@ -49,6 +49,7 @@ def get_relevant_user_info(username, password='def'):
     url = root + 'users/' + username
     r = get_request(url, username, password)
     user = json.loads(r.content)
+
     user_info = {}
     user_info['login'] = user['login']
     user_info['html_url'] = user['html_url']
@@ -284,6 +285,7 @@ def __get_user_followers(username, password='def'):
         yield follower
         
 def __get_user_following(username, password='def'):
+    print(username)
     url = root + 'users/' + username + '/following'
     r = get_request(url, username, password)
     followings = json.loads(r.content)
