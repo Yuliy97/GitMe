@@ -71,11 +71,9 @@ export class HomeComponent implements OnInit {
     );
   }
   getMoreFeed() {
-    this.username =  this._authService.getUsername();
     this._feedService.getFeeds(this.username).subscribe(
       data => {
-        this.issues.push.apply(data);
-
+        this.issues.push(...data);
       }
     );
   }
@@ -91,9 +89,6 @@ export class HomeComponent implements OnInit {
         this.checkCred();
       }
     });
-    this.getMoreFeed();
-    this._reposComp.getMoreRepo(this.username);
-
   }
   checkCred() {
     this._authService.authenticate_user(this.username, this.password).subscribe(
@@ -101,7 +96,8 @@ export class HomeComponent implements OnInit {
         if ( data === 'Authorized') {
           this._authService.update_database(this.username, this.password).subscribe(
             data => {
-              this.router.navigate(['/home']);
+              this.getMoreFeed();
+              this._reposComp.getMoreRepo(this.username);
             }
           );
         } else {
