@@ -21,16 +21,31 @@
     display: flex;
     flex-flow: row wrap;
     /* -webkit-flex-flow: row wrap; */
+
     justify-content: space-around;
+}
+.button {
+  /* background: tomato; */
+  /* padding: 5px; */
+
+  width: 28%;
+  height: inherit;
+  /* flex:30%; */
+  /* margin-right: 5px; */
+  margin-left: 3px;
+  margin-top: 50px;
+  
+  /* line-height: 150px; */
 }
   .flex-item1 {
     /* background: tomato; */
     /* padding: 5px; */
+
     width: 28%;
     height: inherit;
     /* flex:30%; */
     /* margin-right: 5px; */
-    /* margin-top: 10px; */
+    margin-top: -145px; 
     
     /* line-height: 150px; */
   }
@@ -38,10 +53,9 @@
     overflow: scroll;
     /* background: tomato; */
     /* margin-right: 5px; */
-    padding: 5px;
+    margin-top: 60px;
     width: 35%;
     height: auto;
-    margin-bottom: 15px;
     
     /* line-height: 150px; */
   }
@@ -71,12 +85,18 @@
     /* line-height: 150px; */
 
   }
+  .inner-flex-item3 {
+    /* background: yellow; */
+    width: inherit;
+    height: 200px;
+    margin-top: -300px;
+    /* line-height: 150px; */
+
+  }
   .inner-flex-item2 {
     /* background: yellow; */
-    padding: 5px;
     width: inherit;
     height: auto;
-    margin-top: 10px;
     
     /* line-height: 150px; */
 

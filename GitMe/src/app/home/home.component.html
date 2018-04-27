@@ -11,12 +11,12 @@
               
                       <p class="t_commit">GitHub Link: {{html_url}}</p>
                     </mat-card-content>
-                    <mat-card-footer>
-                            <button mat-raised-button color="primary" (click)="addAccount()">Add Accounts</button>
+                    <mat-card-footer class="button">
+                            <button mat-raised-button color="primary" (keyup.enter)="addAccount()" (click)="addAccount()">Add an Account</button>
                     </mat-card-footer>
             </mat-card>
         </li>
-        <li class ="inner-flex-item1">
+        <li class ="inner-flex-item3">
           <div>
           <app-events></app-events>
         </div>
