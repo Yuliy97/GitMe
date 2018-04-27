@@ -57,16 +57,23 @@
   .inner-flexcontainer {
     list-style: none;
     height: inherit;
-    display: inherit;
     display: flex;
     flex-flow: column wrap;
-    justify-content: space-around;
   }
 
-  .inner-flex-item1 {
-    /* background: yellow; */
+  .profile {
+    margin-top: 30px;
+    margin-left: -30px;
     width: inherit;
     height: 200px;
+
+  }
+  .cal {
+    /* background: yellow; */
+    margin-top: 40px;
+    width: inherit;
+    height: 300px;
+    margin-left: -20px;
     
     /* line-height: 150px; */
 
@@ -80,11 +87,6 @@
     
     /* line-height: 150px; */
 
-  }
-  .profile {
-      width: inherit;
-      height: inherit;
-      font-size: inherit;
   }
   mat-card.profile.mat-card {
     margin: 0 auto !important;
