@@ -71,20 +71,28 @@
   .inner-flexcontainer {
     list-style: none;
     height: inherit;
-    display: inherit;
     display: flex;
     flex-flow: column wrap;
-    justify-content: space-around;
   }
 
-  .inner-flex-item1 {
-    /* background: yellow; */
+  .profile {
+    margin-top: 30px;
+    margin-left: -30px;
     width: inherit;
     height: 200px;
+
+  }
+  .cal {
+    /* background: yellow; */
+    margin-top: 40px;
+    width: inherit;
+    height: 300px;
+    margin-left: -20px;
     
     /* line-height: 150px; */
 
   }
+<<<<<<< HEAD
   .inner-flex-item3 {
     /* background: yellow; */
     width: inherit;
@@ -94,18 +102,36 @@
 
   }
   .inner-flex-item2 {
+=======
+  .inner-flex-iten2 {
+>>>>>>> bd403f50c17c88f37c8b02ec5d412926434d4e27
     /* background: yellow; */
     width: inherit;
+<<<<<<< HEAD
     height: auto;
+=======
+    height: 300px;
+    margin-top: 10px;
+>>>>>>> bd403f50c17c88f37c8b02ec5d412926434d4e27
     
     /* line-height: 150px; */
 
   }
-  .profile {
-      width: inherit;
-      height: inherit;
-      font-size: inherit;
-  }
   mat-card.profile.mat-card {
     margin: 0 auto !important;
   }
+  .FeedContainer {
+    margin-top: 20px;
+    list-style: none;
+    height: inherit;
+    display: inherit;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    
+  }
+  hr.style-four {
+    height: 12px;
+    border: 0;
+    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}

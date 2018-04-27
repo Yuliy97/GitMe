@@ -1,7 +1,7 @@
 <ul class="flex-container">
     <li class="flex-item1">
       <ul class="inner-flexcontainer">
-        <li class ="inner-flex-item1">
+        <li class ="profile" >
             <mat-card class="profile">
                 <mat-card-title>Profile</mat-card-title>
                 <mat-card-content> 
@@ -16,7 +16,11 @@
                     </mat-card-footer>
             </mat-card>
         </li>
+<<<<<<< HEAD
         <li class ="inner-flex-item3">
+=======
+        <li class ="cal">
+>>>>>>> bd403f50c17c88f37c8b02ec5d412926434d4e27
           <div class="cal">
           <app-events></app-events>
         </div>
@@ -25,7 +29,18 @@
     </li>
       
     <li class="flex-item2">      
-      <ul class="inner-flexcontainer">
+      <ul class="FeedContainer">
+        <li style="margin: 0 auto;">
+            <h2 style="margin: 0 auto; color:darkslateblue;">GitHub Feeds</h2>
+
+        </li>
+        <li>
+            <hr style="height: 12px;
+            border: 0;
+            box-shadow: inset 0 12px 12px -12px gray;">
+        </li>
+
+
         <!-- <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn"> -->
               <li class="inner-flex-iten2" *ngFor="let issue of issues">
                   <mat-accordion>
