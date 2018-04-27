@@ -59,6 +59,7 @@ import { FollowingService } from './following.service';
 import { RepoService } from './repo.service';
 import { AuthService } from './auth.service';
 import { AddAccountComponent } from './add-account/add-account.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 const routes: Routes = [
   {
     path: '',
@@ -86,6 +87,7 @@ const routes: Routes = [
     AddAccountComponent,
   ],
   imports: [
+    NgxSpinnerModule,
     MatTabsModule,
     MatListModule,
     MyDatePickerModule,

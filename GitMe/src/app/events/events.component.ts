@@ -29,6 +29,8 @@ export class EventsComponent implements OnInit {
         console.log('HELLO');
         alert('Event ' + event.title);
     }
-  };
+  }
+
 }
 }
+

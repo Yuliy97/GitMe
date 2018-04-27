@@ -1,4 +1,5 @@
 <ul class="flex-container">
+    <ngx-spinner></ngx-spinner>
     <li class="flex-item1">
       <ul class="inner-flexcontainer">
         <li class ="profile" >
@@ -38,7 +39,7 @@
 
 
         <!-- <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn"> -->
-              <li class="inner-flex-iten2" *ngFor="let issue of issues">
+              <li class="inner-flex-item2" *ngFor="let issue of issues">
                   <mat-accordion>
                       <mat-expansion-panel>
                         <mat-expansion-panel-header>
@@ -71,3 +72,4 @@
           </ul>
     </li>
   </ul>
+

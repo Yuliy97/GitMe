@@ -10,8 +10,7 @@ import {MatDialog} from '@angular/material';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import { ReposComponent } from '../repos/repos.component';
-
-
+import { NgxSpinnerService } from 'ngx-spinner';
 interface ProfileResponse {
   username: string;
   total_commits: number;
@@ -21,7 +20,7 @@ interface ProfileResponse {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 
 export class HomeComponent implements OnInit {
@@ -29,11 +28,13 @@ export class HomeComponent implements OnInit {
   issues: FeedResponse[] = [];
   search: string;
   username: string;
+  oldusername: string;
   password: string;
   totalCommit: number;
   avatar: string;
   html_url: string;
   constructor(
+    private spinner: NgxSpinnerService,
     private _reposComp: ReposComponent,
     public snackBar: MatSnackBar,
     private _profileService: ProfileService,
@@ -62,6 +63,17 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+  updateProfile() {
+    this.username =  this._authService.getUsername();
+    this._profileService.getProfile(this.username).subscribe(
+      data => {
+        this.totalCommit = this.totalCommit + data.total_commits;
+        this.html_url = this.html_url + " , " + data.html_url;
+        this.avatar = data.avatar;
+        this.username = this.oldusername + " , " + data.username;
+      }
+    );
+  }
   getFeeds() {
     this.username =  this._authService.getUsername();
     this._feedService.getFeeds(this.username).subscribe(
@@ -84,6 +96,7 @@ export class HomeComponent implements OnInit {
     });
     this.addAccountRef.afterClosed().subscribe(result => {
       if (result.email != null) {
+        this.oldusername = this.username;
         this.username = result.email;
         this.password = result.password;
         this.checkCred();
@@ -91,16 +104,21 @@ export class HomeComponent implements OnInit {
     });
   }
   checkCred() {
+    this.spinner.show();
     this._authService.authenticate_user(this.username, this.password).subscribe(
       data => {
         if ( data === 'Authorized') {
           this._authService.update_database(this.username, this.password).subscribe(
             data => {
-              this.getMoreFeed();
               this._reposComp.getMoreRepo(this.username);
+              this.getMoreFeed();
+              this.updateProfile();
+              this.spinner.hide();
             }
           );
         } else {
+          this.spinner.hide();
+          this.username = this.oldusername;
           this.snackBar.open(data, 'Got It', {duration: 3000, extraClasses: ['loginFail-snackbar']});
         }
       }
