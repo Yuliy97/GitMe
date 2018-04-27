@@ -71,11 +71,11 @@
     /* line-height: 150px; */
 
   }
-  .inner-flex-item2 {
+  .inner-flex-iten2 {
     /* background: yellow; */
     padding: 5px;
     width: inherit;
-    height: auto;
+    height: 300px;
     margin-top: 10px;
     
     /* line-height: 150px; */
@@ -89,3 +89,18 @@
   mat-card.profile.mat-card {
     margin: 0 auto !important;
   }
+  .FeedContainer {
+    margin-top: 20px;
+    list-style: none;
+    height: inherit;
+    display: inherit;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    
+  }
+  hr.style-four {
+    height: 12px;
+    border: 0;
+    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
