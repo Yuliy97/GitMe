@@ -9,6 +9,7 @@ import { AddAccountComponent } from '../add-account/add-account.component';
 import {MatDialog} from '@angular/material';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
+import { ReposComponent } from '../repos/repos.component';
 
 
 interface ProfileResponse {
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
   avatar: string;
   html_url: string;
   constructor(
+    private _reposComp: ReposComponent,
     public snackBar: MatSnackBar,
     private _profileService: ProfileService,
     private _feedService: FeedsService,
@@ -90,6 +92,8 @@ export class HomeComponent implements OnInit {
       }
     });
     this.getMoreFeed();
+    this._reposComp.getMoreRepo(this.username);
+
   }
   checkCred() {
     this._authService.authenticate_user(this.username, this.password).subscribe(

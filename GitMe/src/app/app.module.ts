@@ -151,7 +151,9 @@ const routes: Routes = [
     FollowerService,
     FollowingService,
     RepoService,
-    AuthService],
+    AuthService,
+    ReposComponent
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     DialogComponent, AddAccountComponent

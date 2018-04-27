@@ -25,7 +25,13 @@ export class ReposComponent implements OnInit {
         this.repos = data;
       }
     );
-
   }
-
+  getMoreRepo(name: string) {
+    name = this._authService.getUsername();
+    this._repoService.getRepos(name).subscribe(
+      data => {
+        this.repos = data;
+      }
+    );
+  }
 }
