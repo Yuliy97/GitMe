@@ -10,6 +10,32 @@ data["username"] = username
 data["password"] = password
 
 def test():
+    url = root + "/authorize"
+    params={'username': 'jgormley6', 'password': 'JG9671166soccerfan'}
+
+    r = requests.put(url, params=params)
+    message = json.loads(r.content)
+    print(json.dumps(message, indent=4))
+
+    
+    url = root + "/authorize"
+    params={'username': 'jgormley6', 'password': 'password'}
+
+    r = requests.put(url, params=params)
+    message = json.loads(r.content)
+    print(json.dumps(message, indent=4))
+
+    url = root + "/authorize"
+    params={'username': 'jgormley6'}
+
+    r = requests.put(url, params=params)
+    message = json.loads(r.content)
+    print(json.dumps(message, indent=4))
+    
+
+
+
+def old3test():
     url = root + "/users/jgormley6"
     r = requests.get(url)
     user = json.loads(r.content)

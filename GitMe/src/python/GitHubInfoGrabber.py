@@ -26,6 +26,20 @@ def get_request(url, username="def", password='def'):
         auth.append(password)
     return r
 
+def authorize(username="def", password="def"):
+    url = "https://api.github.com"
+
+    r = requests.get(url, auth=(username, password))
+    message = json.loads(r.content)
+    print(json.dumps(message, indent=4))
+    
+    try:
+        mes = message['message']
+        if mes == "Bad credentials":
+            return "Bad credentials"
+    except KeyError:
+        return "Authorized"
+
 ####################################################################
 # For getting specific information about a user
 ####################################################################

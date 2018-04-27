@@ -3,7 +3,7 @@ from flask_restful import Resource, Api, abort
 from flask_jsonpify import jsonify
 import json
 import pymysql as PyMySQL
-from toDB import write_to_all_info
+from toDB import write_to_all_info, authorize
 
 cnx =	{
 		'host': "gitme.cnolzaujohll.us-east-2.rds.amazonaws.com",
@@ -15,9 +15,22 @@ cnx =	{
 app = Flask(__name__)
 api = Api(app)
 
+
 def connect():
     return PyMySQL.connect(cnx['host'], cnx['username'], cnx['password'], cnx['db'])
 
+class Authenticate(Resource):
+    def put(self, username=None, password=None):
+        args = request.args
+        try:
+            username = args['username']
+            password = args['password']
+        except KeyError:
+            return "Invalid credentials"
+        return authorize(username, password)
+
+api.add_resource(Authenticate, '/authorize')
+        
 
 class Users(Resource):
     def get(self):
