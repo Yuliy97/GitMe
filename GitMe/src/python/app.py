@@ -112,6 +112,7 @@ class ProjectGroupsByUser(Resource):
 class Repository(Resource):
 	def get(self):
 		# get URLs and names for all the repositories
+
 		pass
 
 	def post(self, username=None, password=None):
@@ -132,6 +133,19 @@ class RepositoryByUser(Resource):
 		# get URLs and names for all the repositories of a certain user
 		pass
 
+	def post(self, username=None, password=None):
+	args = request.args
+
+	try:
+		username = args['username']
+		password = args['password']
+	except KeyError:
+		# TODO "Tell them something bad happened"
+		print("What a Terrible Failure: username and password not given: REPO POST")
+		pass
+
+	write_to_repository(username=username, password=password)
+	
 class FeedEntity(Resource):
 	def get(self, repository):
 		# connect to DB
