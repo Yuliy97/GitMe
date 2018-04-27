@@ -14,6 +14,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { MyDatePickerModule } from 'mydatepicker';
+import { ProfileService } from './profile.service';
+import { FeedsService } from './feeds.service';
+import {Observable} from 'rxjs/observable';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -101,6 +104,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [
+    HttpClientModule,
     MatFormFieldModule,
     CdkTableModule,
     MatAutocompleteModule,
@@ -136,7 +140,7 @@ const routes: Routes = [
     MatToolbarModule,
     MatTooltipModule,
   ],
-  providers: [ DialogComponent ],
+  providers: [ DialogComponent, FeedsService, ProfileService ],
   bootstrap: [AppComponent],
   entryComponents: [
     DialogComponent,
