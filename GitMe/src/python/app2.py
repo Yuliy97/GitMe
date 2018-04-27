@@ -165,6 +165,8 @@ class CalendarAssignments(Resource):
         except:
             print("Wtf CalendarAssignments get")
 
+        return calendar_assignments
+
     def post(self, username=None, description=None, title=None, date=None):
         db = connect()
         args = request.args
