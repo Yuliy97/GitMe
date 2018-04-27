@@ -160,7 +160,7 @@ class CalendarAssignments(Resource):
                     t_ca['description'] = assignment[1]
                     t_ca['title'] = assignment[2]
                     t_ca['username'] = assignment[3]
-                    t_ca['date'] = assignment[4]
+                    t_ca['date'] = str(assignment[4])
                     calendar_assignments.append(t_ca)
         except:
             print("Wtf CalendarAssignments get")
