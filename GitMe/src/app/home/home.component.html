@@ -11,6 +11,11 @@
               
                       <p class="t_commit">GitHub Link: {{html_url}}</p>
                     </mat-card-content>
+                    <mat-card-footer>
+                        <mat-card-actions> 
+                            <button mat-raised-button color="primary" (click)="addAccount()">Add Accounts</button>
+                        </mat-card-actions>
+                    </mat-card-footer>
             </mat-card>
         </li>
         <li class ="inner-flex-item1">
@@ -23,13 +28,6 @@
       
     <li class="flex-item2">      
       <ul class="inner-flexcontainer">
-              <li class="inner-flex-item1">
-                  <mat-form-field class="example-full-width">
-                      <input matInput placeholder="search" [(ngModel)]="search">
-                    </mat-form-field>
-                    <button mat-button color=primary (click)="searchFor()" cdkFocusInitial>Search
-                      </button>
-              </li>
         <!-- <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn"> -->
               <li class="inner-flex-iten2" *ngFor="let issue of issues">
                   <mat-accordion>

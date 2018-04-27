@@ -8,6 +8,14 @@ import {RequestOptions, Request, RequestMethod} from '@angular/http';
 @Injectable()
 export class FollowerService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getFollower(username: string) {
+    const uri = 'http://127.0.0.1:5000/users/' + username + '/follower';
+    return this.http.get<any[]>(uri)
+            .map(res => {
+              return res;
+            });
+  }
 
 }

@@ -54,7 +54,11 @@ import * as $ from 'jquery';
 import { EventsComponent } from './events/events.component';
 import { FollowerComponent } from './follower/follower.component';
 import { ReposComponent } from './repos/repos.component';
-import { FollowingComponent } from './following/following.component';
+import { FollowerService } from './follower.service';
+import { FollowingService } from './following.service';
+import { RepoService } from './repo.service';
+import { AuthService } from './auth.service';
+import { AddAccountComponent } from './add-account/add-account.component';
 const routes: Routes = [
   {
     path: '',
@@ -79,7 +83,7 @@ const routes: Routes = [
     EventsComponent,
     FollowerComponent,
     ReposComponent,
-    FollowingComponent
+    AddAccountComponent,
   ],
   imports: [
     MatTabsModule,
@@ -140,10 +144,17 @@ const routes: Routes = [
     MatToolbarModule,
     MatTooltipModule,
   ],
-  providers: [ DialogComponent, FeedsService, ProfileService ],
+  providers: [
+    DialogComponent,
+    FeedsService,
+    ProfileService,
+    FollowerService,
+    FollowingService,
+    RepoService,
+    AuthService],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogComponent,
+    DialogComponent, AddAccountComponent
   ]
 })
 export class AppModule { }

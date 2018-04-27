@@ -259,7 +259,10 @@ def __get_comment_info(comment):
     #date: created_at
 def __get_pull_info(pull):
     t_pull = {}
-    t_pull['user'] = pull['assignee']['login']
+    try:
+        t_pull['user'] = pull['assignee']['login']
+    except:
+        t_pull['user'] = 'jgormley6'
     t_pull['title'] = pull['title']
     t_pull['date'] = pull['created_at']
     t_pull['html_url'] = pull['html_url']

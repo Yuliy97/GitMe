@@ -4,6 +4,11 @@ import { Component, OnInit} from '@angular/core';
 import { ProfileService } from '../profile.service';
 import { FeedsService } from '../feeds.service';
 import { FeedResponse } from '../feeds.service';
+import { AuthService } from '../auth.service';
+import { AddAccountComponent } from '../add-account/add-account.component';
+import {MatDialog} from '@angular/material';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
 
 
 interface ProfileResponse {
@@ -19,16 +24,23 @@ interface ProfileResponse {
 })
 
 export class HomeComponent implements OnInit {
+  addAccountRef;
   issues: FeedResponse[] = [];
   search: string;
   username: string;
+  password: string;
   totalCommit: number;
   avatar: string;
   html_url: string;
   constructor(
+    public snackBar: MatSnackBar,
     private _profileService: ProfileService,
     private _feedService: FeedsService,
-  ) { }
+    private _authService: AuthService,
+    public dialog: MatDialog,
+    private router: Router,
+  ) {
+  }
   ngOnInit() {
     this.getProfile();
     this.getFeeds();
@@ -38,7 +50,8 @@ export class HomeComponent implements OnInit {
 
   }
   getProfile() {
-    this._profileService.getProfile('jgormley6').subscribe(
+    this.username =  this._authService.getUsername();
+    this._profileService.getProfile(this.username).subscribe(
       data => {
         this.totalCommit = data.total_commits;
         this.html_url = data.html_url;
@@ -48,12 +61,49 @@ export class HomeComponent implements OnInit {
     );
   }
   getFeeds() {
-    this._feedService.getFeeds('jgormley6').subscribe(
+    this.username =  this._authService.getUsername();
+    this._feedService.getFeeds(this.username).subscribe(
       data => {
         this.issues = data;
       }
     );
   }
+  getMoreFeed() {
+    this.username =  this._authService.getUsername();
+    this._feedService.getFeeds(this.username).subscribe(
+      data => {
+        this.issues.push.apply(this.issues, data);
 
-
+      }
+    );
+  }
+  addAccount(): void {
+    this.addAccountRef = this.dialog.open(AddAccountComponent, {
+      width: '250px',
+      data: { username: this.username, password: this.password}
+    });
+    this.addAccountRef.afterClosed().subscribe(result => {
+      if (result.email != null) {
+        this.username = result.email;
+        this.password = result.password;
+        this.checkCred();
+      }
+    });
+    this.getMoreFeed();
+  }
+  checkCred() {
+    this._authService.authenticate_user(this.username, this.password).subscribe(
+      data => {
+        if ( data === 'Authorized') {
+          this._authService.update_database(this.username, this.password).subscribe(
+            data => {
+              this.router.navigate(['/home']);
+            }
+          );
+        } else {
+          this.snackBar.open(data, 'Got It', {duration: 3000, extraClasses: ['loginFail-snackbar']});
+        }
+      }
+    );
+  }
 }
