@@ -84,7 +84,7 @@
   }
   .cal {
     /* background: yellow; */
-    margin-top: 45px;
+    margin-top: 40px;
     width: inherit;
     height: 300px;
     margin-left: -20px;
@@ -92,49 +92,17 @@
     /* line-height: 150px; */
 
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-  .inner-flex-item3 {
-    /* background: yellow; */
-    width: inherit;
-    height: 200px;
-    margin-top: -300px;
-    /* line-height: 150px; */
-
-  }
-  .inner-flex-item2 {
-=======
-=======
-  .follow {
-    /* background: yellow; */
-    margin-top: 40px;
-    width: inherit;
-    height: 200px;
-    flex-flow: column wrap;
-    
-    /* line-height: 150px; */
-  }
-  .repo {
-    margin-top: 50px;
-    width: inherit;
-    height: 200px;
-    flex-flow: column wrap;
-
-  }
->>>>>>> b6ab4821ce88adab083a8f4cb74ce21ae4ed72c0
   .inner-flex-iten2 {
->>>>>>> bd403f50c17c88f37c8b02ec5d412926434d4e27
     /* background: yellow; */
     width: inherit;
-<<<<<<< HEAD
-    height: auto;
-=======
     height: 300px;
     margin-top: 10px;
->>>>>>> bd403f50c17c88f37c8b02ec5d412926434d4e27
     
     /* line-height: 150px; */
 
+  }
+  mat-card.profile.mat-card {
+    margin: 0 auto !important;
   }
   .FeedContainer {
     margin-top: 20px;
